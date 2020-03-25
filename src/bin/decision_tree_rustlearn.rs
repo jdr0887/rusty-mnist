@@ -71,7 +71,7 @@ fn main() -> io::Result<()> {
     }
     let mut validation_data = array::dense::Array::from(asdf);
     validation_data.reshape(10000, cols);
-    train_data.div_inplace(255.0);
+    validation_data.div_inplace(255.0);
     debug!("validation_data.data().len(): {}", validation_data.data().len());
 
     let mut asdf = Vec::new();
