@@ -36,7 +36,7 @@ fn main() -> io::Result<()> {
     let options = Options::from_args();
     let log_level = Level::from_str(options.log_level.as_str()).expect("Invalid log level");
     simple_logger::init_with_level(log_level).unwrap();
-    info!("{:?}", options);
+    debug!("{:?}", options);
 
     let cols = (28 * 28) as usize;
 

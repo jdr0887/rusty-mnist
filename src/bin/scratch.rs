@@ -46,7 +46,7 @@ fn main() -> io::Result<()> {
     let options = Options::from_args();
     let log_level = Level::from_str(options.log_level.as_str()).expect("Invalid log level");
     simple_logger::init_with_level(log_level).unwrap();
-    info!("{:?}", options);
+    debug!("{:?}", options);
 
     let mut data = array::dense::Array::from(&vec![vec![144.0, 155.0, 30.0], vec![77.0, 88.0, 99.0]]);
     debug!("data: {:?}", data);
