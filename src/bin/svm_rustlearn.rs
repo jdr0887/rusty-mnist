@@ -83,7 +83,7 @@ fn main() -> io::Result<()> {
     validation_labels.reshape(10000, 1);
     debug!("validation_labels.data().len(): {}", validation_labels.data().len());
 
-    let mut model = Hyperparameters::new(cols, KernelType::Linear, 3).build();
+    let mut model = Hyperparameters::new(cols, KernelType::Linear, 20).build();
 
     model.fit(&train_data, &train_labels).unwrap();
 

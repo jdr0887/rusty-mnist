@@ -27,6 +27,9 @@ struct Options {
     #[structopt(short = "m", long = "mnist_dir", long_help = "mnist data directory", required = true, parse(from_os_str))]
     mnist_dir: path::PathBuf,
 
+    #[structopt(short = "e", long = "epochs", long_help = "epochs", default_value = "1")]
+    epochs: u32,
+
     #[structopt(short = "l", long = "log_level", long_help = "log level", default_value = "debug")]
     log_level: String,
 }
@@ -38,47 +41,8 @@ fn main() -> io::Result<()> {
     simple_logger::init_with_level(log_level).unwrap();
     debug!("{:?}", options);
 
-    let mnist = MnistBuilder::new()
-        .base_path(&options.mnist_dir.to_string_lossy())
-        .label_format_digit()
-        .training_set_length(50_000)
-        .validation_set_length(10_000)
-        .test_set_length(10_000)
-        .finalize();
-
-    let mut asdf = Vec::new();
-    for data in mnist.trn_img.iter() {
-        asdf.push(*data as f32);
-    }
-    let mut train_data = array::dense::Array::from(asdf);
-    train_data.reshape(50000, 28 * 28);
-    train_data.div_inplace(255.0);
-    debug!("train_data.data().len(): {}", train_data.data().len());
-
-    let mut asdf = Vec::new();
-    for data in mnist.trn_lbl.iter() {
-        asdf.push(*data as f32);
-    }
-    let mut train_labels = array::dense::Array::from(asdf);
-    train_labels.reshape(50000, 1);
-    debug!("train_labels.data().len(): {}", train_labels.data().len());
-
-    let mut asdf = Vec::new();
-    for data in mnist.val_img.iter() {
-        asdf.push(*data as f32);
-    }
-    let mut validation_data = array::dense::Array::from(asdf);
-    validation_data.reshape(10000, 28 * 28);
-    validation_data.div_inplace(255.0);
-    debug!("validation_data.data().len(): {}", validation_data.data().len());
-
-    let mut asdf = Vec::new();
-    for data in mnist.val_lbl.iter() {
-        asdf.push(*data as f32);
-    }
-    let mut validation_labels = array::dense::Array::from(asdf);
-    validation_labels.reshape(10000, 1);
-    debug!("validation_labels.data().len(): {}", validation_labels.data().len());
+    let (training_data, training_labels, validation_data, validation_labels) =
+        rusty_mnist::get_training_and_validation_data(&options.mnist_dir.as_path()).unwrap();
 
     let mut model = sgdclassifier::Hyperparameters::new(28 * 28)
         .learning_rate(0.1)
@@ -86,8 +50,8 @@ fn main() -> io::Result<()> {
         .l1_penalty(0.0)
         .one_vs_rest();
 
-    for _ in 0..10 {
-        model.fit(&train_data, &train_labels).unwrap();
+    for _ in 0..options.epochs {
+        model.fit(&training_data, &training_labels).unwrap();
     }
 
     let prediction_output = model.predict(&validation_data).unwrap();

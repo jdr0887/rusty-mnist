@@ -9,7 +9,6 @@ extern crate serde_derive;
 extern crate structopt;
 
 use humantime::format_duration;
-use image::GenericImageView;
 use log::Level;
 use mnist::{Mnist, MnistBuilder};
 use rusty_machine::analysis::score::accuracy;
@@ -19,9 +18,6 @@ use rusty_machine::learning::optim::grad_desc::GradientDesc;
 use rusty_machine::linalg;
 use rusty_machine::prelude::SupModel;
 use rusty_machine::prelude::*;
-use serde::{Deserialize, Serialize};
-use std::convert::TryInto;
-use std::fs;
 use std::io;
 use std::path;
 use std::str::FromStr;

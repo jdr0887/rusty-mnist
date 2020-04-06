@@ -10,8 +10,6 @@ extern crate structopt;
 
 use humantime::format_duration;
 use log::Level;
-use mnist::MnistBuilder;
-use rustlearn::array;
 use rustlearn::ensemble::random_forest;
 use rustlearn::metrics;
 use rustlearn::prelude::*;
@@ -39,57 +37,16 @@ fn main() -> io::Result<()> {
     simple_logger::init_with_level(log_level).unwrap();
     debug!("{:?}", options);
 
-    let cols = (28 * 28) as usize;
+    let (training_data, training_labels, validation_data, validation_labels) =
+        rusty_mnist::get_training_and_validation_data(&options.mnist_dir.as_path()).unwrap();
 
-    let mnist = MnistBuilder::new()
-        .base_path(&options.mnist_dir.to_string_lossy())
-        .label_format_digit()
-        .training_set_length(50_000)
-        .validation_set_length(10_000)
-        .test_set_length(10_000)
-        .finalize();
-
-    let mut asdf = Vec::new();
-    for data in mnist.trn_img.iter() {
-        asdf.push(*data as f32);
-    }
-    let mut train_data = array::dense::Array::from(asdf);
-    train_data.reshape(50000, cols);
-    train_data.div_inplace(255.0);
-    debug!("train_data.data().len(): {}", train_data.data().len());
-
-    let mut asdf = Vec::new();
-    for data in mnist.trn_lbl.iter() {
-        asdf.push(*data as f32);
-    }
-    let mut train_labels = array::dense::Array::from(asdf);
-    train_labels.reshape(50000, 1);
-    debug!("train_labels.data().len(): {}", train_labels.data().len());
-
-    let mut asdf = Vec::new();
-    for data in mnist.val_img.iter() {
-        asdf.push(*data as f32);
-    }
-    let mut validation_data = array::dense::Array::from(asdf);
-    validation_data.reshape(10000, cols);
-    validation_data.div_inplace(255.0);
-    debug!("validation_data.data().len(): {}", validation_data.data().len());
-
-    let mut asdf = Vec::new();
-    for data in mnist.val_lbl.iter() {
-        asdf.push(*data as f32);
-    }
-    let mut validation_labels = array::dense::Array::from(asdf);
-    validation_labels.reshape(10000, 1);
-    debug!("validation_labels.data().len(): {}", validation_labels.data().len());
-
-    let mut tree_params = decision_tree::Hyperparameters::new(cols);
+    let mut tree_params = decision_tree::Hyperparameters::new(28 * 28);
     tree_params.min_samples_split(20);
     tree_params.max_depth(20);
 
     let mut model = random_forest::Hyperparameters::new(tree_params, 10).one_vs_rest();
 
-    model.fit(&train_data, &train_labels).unwrap();
+    model.fit(&training_data, &training_labels).unwrap();
 
     let prediction_output = model.predict(&validation_data).unwrap();
 
