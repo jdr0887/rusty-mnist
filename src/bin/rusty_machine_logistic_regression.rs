@@ -25,7 +25,7 @@ use std::time::Instant;
 use structopt::StructOpt;
 
 #[derive(StructOpt, Debug)]
-#[structopt(name = "logistic_regression_rusty_machine", about = "logistic regression using rusty_machine")]
+#[structopt(name = "rusty_machine_logistic_regression", about = "logistic regression using rusty_machine")]
 struct Options {
     #[structopt(short = "m", long = "mnist_dir", long_help = "mnist data directory", required = true, parse(from_os_str))]
     mnist_dir: path::PathBuf,
