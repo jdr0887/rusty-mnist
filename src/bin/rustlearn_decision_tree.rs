@@ -20,7 +20,7 @@ use std::time::Instant;
 use structopt::StructOpt;
 
 #[derive(StructOpt, Debug)]
-#[structopt(name = "decision_tree_rustlearn", about = "decision tree using rustlearn")]
+#[structopt(name = "rustlearn_decision_tree", about = "decision tree using rustlearn")]
 struct Options {
     #[structopt(short = "m", long = "mnist_dir", long_help = "mnist data directory", required = true, parse(from_os_str))]
     mnist_dir: path::PathBuf,

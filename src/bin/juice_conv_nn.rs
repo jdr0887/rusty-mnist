@@ -28,7 +28,7 @@ use std::time::Instant;
 use structopt::StructOpt;
 
 #[derive(StructOpt, Debug)]
-#[structopt(name = "conv_nn_juice", about = "convolution neural network using juice")]
+#[structopt(name = "juice_conv_nn", about = "convolution neural network using juice")]
 struct Options {
     #[structopt(short = "m", long = "mnist_dir", long_help = "mnist data directory", required = true, parse(from_os_str))]
     mnist_dir: path::PathBuf,
