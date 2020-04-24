@@ -10,9 +10,6 @@ extern crate structopt;
 
 use humantime::format_duration;
 use log::Level;
-use mnist::{Mnist, MnistBuilder};
-use rusty_machine::analysis::score::accuracy;
-use rusty_machine::data::transforms::{Standardizer, Transformer};
 use rusty_machine::learning;
 use rusty_machine::learning::optim::grad_desc::GradientDesc;
 use rusty_machine::linalg;
@@ -41,7 +38,7 @@ fn main() -> io::Result<()> {
     simple_logger::init_with_level(log_level).unwrap();
     debug!("{:?}", options);
 
-    let mnist = MnistBuilder::new()
+    let mnist = mnist::MnistBuilder::new()
         .base_path(&options.mnist_dir.to_string_lossy())
         .label_format_digit()
         .training_set_length(50_000)

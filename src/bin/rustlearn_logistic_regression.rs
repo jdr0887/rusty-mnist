@@ -10,8 +10,6 @@ extern crate structopt;
 
 use humantime::format_duration;
 use log::Level;
-use mnist::MnistBuilder;
-use rustlearn::array;
 use rustlearn::linear_models::sgdclassifier;
 use rustlearn::metrics;
 use rustlearn::prelude::*;
