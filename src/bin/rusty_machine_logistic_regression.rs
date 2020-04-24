@@ -78,7 +78,7 @@ fn main() -> io::Result<()> {
     }
     debug!("validation_targets.size(): {:?}", validation_targets.size());
 
-    let mut model = learning::logistic_reg::LogisticRegressor::new(GradientDesc::new(0.1, 1000));
+    let mut model = learning::logistic_reg::LogisticRegressor::new(GradientDesc::new(0.01, 1000));
     model.train(&train_data_matrix, &train_targets).unwrap();
 
     let predicted_outputs = model.predict(&validation_data_matrix).unwrap();
