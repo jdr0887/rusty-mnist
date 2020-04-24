@@ -34,7 +34,7 @@ struct Options {
     #[structopt(short = "b", long = "batch_size", long_help = "batch size", default_value = "10")]
     batch_size: usize,
 
-    #[structopt(short = "r", long = "learning_rate", long_help = "learning rate", default_value = "0.001")]
+    #[structopt(short = "r", long = "learning_rate", long_help = "learning rate", default_value = "0.01")]
     learning_rate: f32,
 
     #[structopt(short = "o", long = "momentum", long_help = "momentum", default_value = "0")]
