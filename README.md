@@ -4,9 +4,9 @@ MNIST ML using Rust.
 
 The following stats were run on a Lenovo P53s with 46GB RAM.  I used the following Rust-based ML libraries:
 
-[rusty-machine](https://github.com/AtheMathmo/rusty-machine)
-[rustlearn](https://github.com/maciejkula/rustlearn)
-[juice](https://github.com/spearow/juice)
+* [rusty-machine](https://github.com/AtheMathmo/rusty-machine)
+* [rustlearn](https://github.com/maciejkula/rustlearn)
+* [juice](https://github.com/spearow/juice)
 
 ```
 $ cargo --version
